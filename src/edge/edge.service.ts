@@ -1,5 +1,5 @@
 // edge.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Edge } from './entities/edge.entity';
@@ -26,5 +26,14 @@ export class EdgeService {
 
   async findAll(): Promise<Edge[]> {
     return this.edgeRepository.find();
+  }
+
+  async findOne(id: string): Promise<Edge> {
+    const edge = await this.edgeRepository.findOne({ where: { id } });
+    if (!edge) {
+      throw new NotFoundException(`Edge with ID ${id} not found`)
+    }
+
+    return edge;
   }
 }
