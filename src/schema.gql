@@ -20,3 +20,12 @@ scalar DateTime
 type Query {
   edges: [Edge!]!
 }
+
+type Mutation {
+  createEdge(createEdgeInput: CreateEdgeInput!): Edge!
+}
+
+input CreateEdgeInput {
+  node1_alias: String!
+  node2_alias: String!
+}
