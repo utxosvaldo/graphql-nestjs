@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Edge } from './edge.entity';
+import { Edge } from './entities/edge.entity';
 
 @Injectable()
 export class EdgeService {

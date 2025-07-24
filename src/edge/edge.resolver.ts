@@ -1,7 +1,7 @@
 // edge.resolver.ts
 import { Resolver, Query } from '@nestjs/graphql';
-import { Edge } from './edge.entity';
 import { EdgeService } from './edge.service';
+import { Edge } from './entities/edge.entity';
 
 @Resolver(() => Edge)
 export class EdgeResolver {

@@ -1,3 +1,4 @@
+
 // edge.entity.ts
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from 'typeorm';
