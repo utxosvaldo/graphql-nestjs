@@ -9,6 +9,7 @@ type Edge {
   capacity: Int!
   node1_alias: String!
   node2_alias: String!
+  edge_peers: String!
 }
 
 """

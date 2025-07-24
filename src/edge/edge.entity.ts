@@ -28,4 +28,9 @@ export class Edge {
   @Column()
   @Field()
   node2_alias: string;
+
+  @Field()
+  get edge_peers(): string {
+    return `${this.node1_alias}-${this.node2_alias}`;
+  }
 }
