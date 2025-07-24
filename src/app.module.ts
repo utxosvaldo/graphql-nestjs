@@ -18,9 +18,9 @@ import { join } from 'path';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'root',
-      password: 'root',
-      database: 'demo',
+      username: 'postgres',
+      password: 'password',
+      database: 'demo_db',
       autoLoadEntities: true,
       synchronize: true, // only for development
     }),
