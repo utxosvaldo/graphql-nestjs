@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { join } from 'path';
       autoLoadEntities: true,
       synchronize: true, // only for development
     }),
-    EdgeModule
+    EdgeModule,
+    RabbitmqModule
   ],
   controllers: [AppController],
   providers: [AppService],
