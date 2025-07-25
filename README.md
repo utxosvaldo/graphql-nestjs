@@ -77,7 +77,7 @@ cp .env.docker.example .env.docker
 # Edit .env.docker with your preferred values
 
 # 3. Start infrastructure services only
-docker compose --profile development up -d
+docker compose --profile dev up -d
 
 # 4. Run NestJS locally with hot reload
 npm run start:dev
@@ -93,7 +93,7 @@ cp .env.docker.example .env.docker
 # Configure production values in .env.docker
 
 # 2. Start all services
-docker compose --profile production up -d --build
+docker compose --profile prod up -d --build
 
 # 3. Access the application
 open http://localhost:3000/graphql
