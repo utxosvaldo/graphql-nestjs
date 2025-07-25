@@ -24,6 +24,11 @@
 
 This project demonstrates a **production-ready GraphQL API** for managing Lightning Network channel edges with real-time event processing:
 
+-   ✅ Check the [GraphQL Playground](http://demo.utxoz.me:3000/graphql) for this project
+-   ✅ And the [RabbitMQ Management Web UI](http://rabbitmq.utxoz.me:15672) (User: satoshi, Password: nakamoto)
+
+---
+
 ### ✅ **Core Features**
 
 - **GraphQL API** with TypeScript and code-first approach
