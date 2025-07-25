@@ -34,6 +34,7 @@ import { EdgeEventsModule } from './edge-events/edge-events.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      introspection: true,
       playground: true,
       debug: true,
     }),
