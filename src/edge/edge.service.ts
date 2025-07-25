@@ -38,7 +38,7 @@ export class EdgeService {
     });
 
     const savedEdge = await this.edgeRepository.save(edge);
-    console.log(`Edge created: ${JSON.stringify(savedEdge, null, 2)}`);
+    // console.log(`Edge created: ${JSON.stringify(savedEdge, null, 2)}`);
 
     this.client.emit('edge.created', savedEdge);
 
