@@ -128,9 +128,10 @@ This project uses NestJS ConfigModule with environment-specific configurations:
 
 ```graphql
 mutation {
-  createEdge(
-    input: { node1_alias: "lightning-alice", node2_alias: "lightning-bob" }
-  ) {
+  createEdge(createEdgeInput: {
+    node1_alias: "lightning-alice"
+    node2_alias: "lightning-bob"
+  }) {
     id
     capacity
     node1_alias
