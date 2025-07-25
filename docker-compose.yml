@@ -3,6 +3,8 @@ services:
   postgres:
     image: postgres:15
     container_name: demo-postgres
+    env_file:
+      - .env.docker
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -25,6 +27,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: demo-rabbitmq
+    env_file:
+      - .env.docker
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: password
@@ -49,6 +53,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: demo-nestjs
+    env_file:
+      - .env.docker # in production, nestjs gets all vars from here
     ports:
       - "3000:3000"
     depends_on:

@@ -13,7 +13,7 @@ import { EdgeEventsModule } from './edge-events/edge-events.module';
     // ConfigModule setup - from docs [1]
     ConfigModule.forRoot({
       isGlobal: true, // Makes ConfigService available everywhere without importing
-      envFilePath: '.env', // Loads .env file for local development
+      envFilePath: '.env.local', // Loads file for local development
       ignoreEnvFile: process.env.NODE_ENV === 'production', // In production, use container env vars only
     }),
 
