@@ -4,20 +4,17 @@ services:
     image: postgres:15
     container_name: demo-postgres
     env_file:
-      - .env.docker
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: demo_db
+      - ./.env.docker
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U postgres -d demo_db"]
+      interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     networks:
       - app-network
     profiles:
@@ -28,10 +25,7 @@ services:
     image: rabbitmq:3-management
     container_name: demo-rabbitmq
     env_file:
-      - .env.docker
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: password
+      - ./.env.docker
     ports:
       - "5672:5672" # AMQP port
       - "15672:15672" # Management UI
@@ -39,9 +33,10 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     networks:
       - app-network
     profiles:
@@ -54,7 +49,7 @@ services:
       dockerfile: Dockerfile
     container_name: demo-nestjs
     env_file:
-      - .env.docker # in production, nestjs gets all vars from here
+      - ./.env.docker
     ports:
       - "3000:3000"
     depends_on:
@@ -62,17 +57,6 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    environment:
-      # Database configuration
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: password
-      DB_NAME: demo_db
-      # RabbitMQ configuration
-      RABBITMQ_URL: amqp://admin:password@rabbitmq:5672
-      # Application configuration
-      NODE_ENV: production
     networks:
       - app-network
     restart: unless-stopped
@@ -86,9 +70,10 @@ services:
           "--spider",
           "http://localhost:3000/graphql",
         ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     profiles:
       - prod
 
