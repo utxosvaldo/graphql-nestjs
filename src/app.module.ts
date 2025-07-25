@@ -7,6 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
+import { EdgeEventsModule } from './edge-events/edge-events.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
       synchronize: true, // only for development
     }),
     EdgeModule,
-    RabbitmqModule
+    RabbitmqModule,
+    EdgeEventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
