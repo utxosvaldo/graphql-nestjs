@@ -13,9 +13,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -30,9 +32,56 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 10s
+      interval: 5s
+      timeout: 5s
       retries: 5
+    networks:
+      - app-network
+
+  nestjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: demo-nestjs
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      # Database configuration
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+      DB_NAME: demo_db
+      # RabbitMQ configuration
+      RABBITMQ_URL: amqp://admin:password@rabbitmq:5672
+      # Application configuration
+      NODE_ENV: production
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/graphql",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:

@@ -1,23 +1,23 @@
 # Use Node.js 22.17.0 as base image
 FROM node:22.17.0-alpine
 
-# Set working directory
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy package files
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install the application dependencies
+RUN npm install
 
-# Copy source code
+# Copy the rest of the application files
 COPY . .
 
-# Build the application
+# Build the NestJS application
 RUN npm run build
 
-# Expose the port your app runs on (adjust if different)
+# Expose the application port
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# Command to run the application
+CMD ["node", "dist/main"]

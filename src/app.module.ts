@@ -1,36 +1,32 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { EdgeModule } from './edge/edge.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
+import { EdgeModule } from './edge/edge.module';
 import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 import { EdgeEventsModule } from './edge-events/edge-events.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      graphiql: true,
-    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: process.env.DB_HOST || 'postgres',
       port: 5432,
-      username: 'postgres',
-      password: 'password',
-      database: 'demo_db',
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'password',
+      database: process.env.DB_NAME || 'demo_db',
       autoLoadEntities: true,
-      synchronize: true, // only for development
+      synchronize: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+      playground: true,
+      debug: true,
     }),
     EdgeModule,
     RabbitmqModule,
     EdgeEventsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule { }
