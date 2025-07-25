@@ -10,9 +10,8 @@ import { EdgeEventsModule } from './edge-events/edge-events.module';
 
 @Module({
   imports: [
-    // ConfigModule setup - from docs [1]
     ConfigModule.forRoot({
-      isGlobal: true, // Makes ConfigService available everywhere without importing
+      isGlobal: true,
       envFilePath: '.env.local', // Loads file for local development
       ignoreEnvFile: process.env.NODE_ENV === 'production', // In production, use container env vars only
     }),
@@ -29,7 +28,7 @@ import { EdgeEventsModule } from './edge-events/edge-events.module';
         autoLoadEntities: true,
         synchronize: true, // Only for demo
       }),
-      inject: [ConfigService], // Inject ConfigService into factory
+      inject: [ConfigService],
     }),
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
