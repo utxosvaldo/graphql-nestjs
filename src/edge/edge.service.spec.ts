@@ -88,7 +88,7 @@ describe('EdgeService', () => {
   });
 
   describe('create', () => {
-    it('should create and save a new edge', async () => {
+    it('should create and save a new edge and emit the edge object in a message.', async () => {
       const createEdgeInput: CreateEdgeInput = {
         node1_alias: 'alice',
         node2_alias: 'bob',
