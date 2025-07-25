@@ -1,4 +1,6 @@
+// app.module.ts
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -8,16 +10,28 @@ import { EdgeEventsModule } from './edge-events/edge-events.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST || 'postgres',
-      port: 5432,
-      username: process.env.DB_USERNAME || 'postgres',
-      password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_NAME || 'demo_db',
-      autoLoadEntities: true,
-      synchronize: true,
+    // ConfigModule setup - from docs [1]
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes ConfigService available everywhere without importing
+      envFilePath: '.env', // Loads .env file for local development
+      ignoreEnvFile: process.env.NODE_ENV === 'production', // In production, use container env vars only
     }),
+
+    // TypeORM with ConfigService - async configuration
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 5432),
+        username: configService.get<string>('DB_USERNAME', 'postgres'),
+        password: configService.get<string>('DB_PASSWORD', 'password'),
+        database: configService.get<string>('DB_NAME', 'demo_db'),
+        autoLoadEntities: true,
+        synchronize: true, // Only for demo
+      }),
+      inject: [ConfigService], // Inject ConfigService into factory
+    }),
+
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
