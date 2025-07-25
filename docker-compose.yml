@@ -18,6 +18,9 @@ services:
       retries: 5
     networks:
       - app-network
+    profiles:
+      - dev
+      - prod
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -37,6 +40,9 @@ services:
       retries: 5
     networks:
       - app-network
+    profiles:
+      - dev
+      - prod
 
   nestjs-app:
     build:
@@ -77,7 +83,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 40s
+    profiles:
+      - prod
 
 networks:
   app-network:
