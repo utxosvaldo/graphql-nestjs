@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, NotFoundException } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { EdgeEventsService } from './edge-events.service';
-import { Edge } from 'src/edge/entities/edge.entity';
+import { Edge } from '../edge/entities/edge.entity';
 
 @Controller()
 export class EdgeEventsController {
@@ -21,7 +21,7 @@ export class EdgeEventsController {
     })
 
     if (result.affected === 0) {
-      throw new Error(`Edge with ID ${data.id} not found for update`);
+      throw new NotFoundException(`Edge with ID ${data.id} not found for update`);
     }
   }
 

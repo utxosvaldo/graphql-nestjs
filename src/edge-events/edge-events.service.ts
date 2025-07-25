@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateEdgeEventDto } from './dto/update-edge-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { Edge } from 'src/edge/entities/edge.entity';
+import { Edge } from '../edge/entities/edge.entity';
 
 @Injectable()
 export class EdgeEventsService {
@@ -17,7 +17,7 @@ export class EdgeEventsService {
     })
 
     if (result.affected === 0) {
-      throw new Error(`Edge with ID ${id} not found for update`);
+      throw new NotFoundException(`Edge with ID ${id} not found for update`);
     }
 
     return result;
