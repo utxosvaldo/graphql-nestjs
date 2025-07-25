@@ -22,7 +22,10 @@ services:
       - prod
 
   rabbitmq:
-    image: rabbitmq:3-management
+    build:
+      context: .
+      dockerfile: rabbitmq.Dockerfile
+    # image: rabbitmq:3-management
     container_name: demo-rabbitmq
     env_file:
       - ./.env.docker
